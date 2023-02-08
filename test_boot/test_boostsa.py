@@ -1,6 +1,17 @@
 # coding=latin-1
 from boostsa import Bootstrap
 
+def test_return_p_values():
+    boot = Bootstrap()
+    df_tot, df_tgt = boot.test(targs='test_boot/h0.0/targs.txt', h0_preds='test_boot/h0.0/preds.txt', h1_preds='test_boot/h1.0/preds.txt', n_loops=100)
+    assert 'p_f1' in df_tot.columns
+    assert 'p_acc' in df_tot.columns
+    assert 'p_prec' in df_tot.columns
+    assert 'p_rec' in df_tot.columns
+    assert all(df_tot['p_f1'].isna() | ((df_tot['p_f1'] >= 0.0) & (df_tot['p_f1'] <= 1.0)))
+    assert all(df_tot['p_acc'].isna() | ((df_tot['p_acc'] >= 0.0) & (df_tot['p_acc'] <= 1.0)))
+    assert all(df_tot['p_prec'].isna() | ((df_tot['p_prec'] >= 0.0) & (df_tot['p_prec'] <= 1.0)))
+    assert all(df_tot['p_rec'].isna() | ((df_tot['p_rec'] >= 0.0) & (df_tot['p_rec'] <= 1.0)))
 
 def test_all():
     boot = Bootstrap()
