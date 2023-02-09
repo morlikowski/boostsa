@@ -662,12 +662,12 @@ class Bootstrap:
                         df_tgt = pd.concat([df_tgt, df_tgt_cond.iloc[1, :]], axis=1)
 
         if self.data[list(self.data.keys())[0]]['targs'][0].shape[1] == 1:
-            df_tot = df_tot.T['mean_epochs f1 d_f1 s_f1 std_f1 acc d_acc s_acc prec d_prec s_prec rec d_rec s_rec'.split()].round(4)
+            df_tot = df_tot.T['mean_epochs f1 d_f1 s_f1 std_f1 p_f1 acc d_acc s_acc p_acc prec d_prec s_prec p_prec rec d_rec s_rec p_rec'.split()].round(4)
         else:
-            df_tot = df_tot.T['mean_epochs jsd d_jsd s_jsd std_jsd ce d_ce s_ce sim d_sim s_sim cor d_cor s_cor'.split()].round(4)
+            df_tot = df_tot.T['mean_epochs jsd d_jsd s_jsd std_jsd p_jsd ce d_ce s_ce p_ce sim d_sim s_sim p_sim cor d_cor s_cor p_cor'.split()].round(4)
         if targetclass is not None:
             if self.data[list(self.data.keys())[0]]['targs'][0].shape[1] == 1:
-                df_tgt = df_tgt.T['mean_epochs tf1 d_tf1 s_tf1 std_tf1 tprec d_tprec s_tprec trec d_trec s_trec'.split()].round(4)
+                df_tgt = df_tgt.T['mean_epochs f1 d_f1 s_f1 std_f1 p_f1 prec d_prec s_prec p_prec rec d_rec s_rec p_rec'.split()].round(4)
             else:
                 df_tgt = df_tgt.T
             df_both = pd.concat([df_tot, df_tgt.iloc[:, 1:]], axis=1)
