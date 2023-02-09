@@ -13,6 +13,19 @@ def test_return_p_values():
     assert all(df_tot['p_prec'].isna() | ((df_tot['p_prec'] >= 0.0) & (df_tot['p_prec'] <= 1.0)))
     assert all(df_tot['p_rec'].isna() | ((df_tot['p_rec'] >= 0.0) & (df_tot['p_rec'] <= 1.0)))
 
+def test_return_p_values_soft_labels():
+    boot = Bootstrap()
+    df_tot, _ = boot.test(targs='test_boot/h3.0/targs.txt', h0_preds='test_boot/h3.0/preds.txt', h1_preds='test_boot/h3.0/preds.txt', n_loops=100)
+    assert 'p_jsd' in df_tot.columns
+    assert 'p_ce' in df_tot.columns
+    assert 'p_sim' in df_tot.columns
+    assert 'p_cor' in df_tot.columns
+    # p values should be NaN or float values between 0.0 and 1.0
+    assert all(df_tot['p_jsd'].isna() | ((df_tot['p_jsd'] >= 0.0) & (df_tot['p_jsd'] <= 1.0)))
+    assert all(df_tot['p_ce'].isna() | ((df_tot['p_ce'] >= 0.0) & (df_tot['p_ce'] <= 1.0)))
+    assert all(df_tot['p_sim'].isna() | ((df_tot['p_sim'] >= 0.0) & (df_tot['p_sim'] <= 1.0)))
+    assert all(df_tot['p_cor'].isna() | ((df_tot['p_cor'] >= 0.0) & (df_tot['p_cor'] <= 1.0)))
+
 def test_all():
     boot = Bootstrap()
     boot.test(targs='test_boot/h0.0/targs.txt', h0_preds='test_boot/h0.0/preds.txt', h1_preds='test_boot/h1.0/preds.txt')
