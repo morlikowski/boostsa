@@ -477,35 +477,49 @@ class Bootstrap:
                     if df_sample_tgt.d_tf1[-1]    > 2 * diff_tgt_f1:   twice_diff_tgt_f1   += 1
                     if df_sample_tgt.d_tprec[-1]  > 2 * diff_tgt_prec: twice_diff_tgt_prec += 1
                     if df_sample_tgt.d_trec[-1]   > 2 * diff_tgt_rec:  twice_diff_tgt_rec  += 1
-            col_sign_f1   = f"{BColor.red}**{BColor.reset}" if twice_diff_f1   / n_loops < 0.01 else f"{BColor.red}*{BColor.reset}" if twice_diff_f1   / n_loops < 0.05 else f"{BColor.grey}!{BColor.reset}" if twice_diff_f1   / n_loops > 0.95 else f"{BColor.grey}!!{BColor.reset}" if twice_diff_f1   / n_loops > 0.99 else ''
-            col_sign_acc  = f"{BColor.red}**{BColor.reset}" if twice_diff_acc  / n_loops < 0.01 else f"{BColor.red}*{BColor.reset}" if twice_diff_acc  / n_loops < 0.05 else f"{BColor.grey}!{BColor.reset}" if twice_diff_acc  / n_loops > 0.95 else f"{BColor.grey}!!{BColor.reset}" if twice_diff_acc  / n_loops > 0.99 else ''
-            col_sign_prec = f"{BColor.red}**{BColor.reset}" if twice_diff_prec / n_loops < 0.01 else f"{BColor.red}*{BColor.reset}" if twice_diff_prec / n_loops < 0.05 else f"{BColor.grey}!{BColor.reset}" if twice_diff_prec / n_loops > 0.95 else f"{BColor.grey}!!{BColor.reset}" if twice_diff_prec / n_loops > 0.99 else ''
-            col_sign_rec  = f"{BColor.red}**{BColor.reset}" if twice_diff_rec  / n_loops < 0.01 else f"{BColor.red}*{BColor.reset}" if twice_diff_rec  / n_loops < 0.05 else f"{BColor.grey}!{BColor.reset}" if twice_diff_rec  / n_loops > 0.95 else f"{BColor.grey}!!{BColor.reset}" if twice_diff_rec  / n_loops > 0.99 else ''
-            sign_f1   = "**" if twice_diff_f1   / n_loops < 0.01 else "*" if twice_diff_f1   / n_loops < 0.05 else "!" if twice_diff_f1   / n_loops > 0.95 else "!!" if twice_diff_f1   / n_loops > 0.99 else ''
-            sign_acc  = "**" if twice_diff_acc  / n_loops < 0.01 else "*" if twice_diff_acc  / n_loops < 0.05 else "!" if twice_diff_acc  / n_loops > 0.95 else "!!" if twice_diff_acc  / n_loops > 0.99 else ''
-            sign_prec = "**" if twice_diff_prec / n_loops < 0.01 else "*" if twice_diff_prec / n_loops < 0.05 else "!" if twice_diff_prec / n_loops > 0.95 else "!!" if twice_diff_prec / n_loops > 0.99 else ''
-            sign_rec  = "**" if twice_diff_rec  / n_loops < 0.01 else "*" if twice_diff_rec  / n_loops < 0.05 else "!" if twice_diff_rec  / n_loops > 0.95 else "!!" if twice_diff_rec  / n_loops > 0.99 else ''
-            str_out = f"\n{'count sample diff f1   is twice tot diff f1':.<50} {twice_diff_f1:<5}/ {n_loops:<8}p < {round((twice_diff_f1 / n_loops), 4):<6} {col_sign_f1}\n" \
-                      f"{'count sample diff prec is twice tot diff prec':.<50} {twice_diff_prec:<5}/ {n_loops:<8}p < {round((twice_diff_prec / n_loops), 4):<6} {col_sign_prec}\n" \
-                      f"{'count sample diff rec  is twice tot diff rec ':.<50} {twice_diff_rec:<5}/ {n_loops:<8}p < {round((twice_diff_rec / n_loops), 4):<6} {col_sign_rec }\n" \
-                      f"{'count sample diff acc  is twice tot diff acc':.<50} {twice_diff_acc:<5}/ {n_loops:<8}p < {round((twice_diff_acc / n_loops), 4):<6} {col_sign_acc }"
+            p_diff_f1  = twice_diff_f1   / n_loops
+            p_diff_acc = twice_diff_acc  / n_loops
+            p_diff_prec = twice_diff_prec / n_loops
+            p_diff_rec = twice_diff_rec  / n_loops
+            df_tot['p_f1'] = [float('nan'), p_diff_f1]
+            df_tot['p_acc'] = [float('nan'), p_diff_acc]
+            df_tot['p_prec'] = [float('nan'), p_diff_prec]
+            df_tot['p_rec'] = [float('nan'), p_diff_rec]
+            col_sign_f1   = f"{BColor.red}**{BColor.reset}" if p_diff_f1 < 0.01 else f"{BColor.red}*{BColor.reset}" if p_diff_f1 < 0.05 else f"{BColor.grey}!{BColor.reset}" if p_diff_f1 > 0.95 else f"{BColor.grey}!!{BColor.reset}" if p_diff_f1 > 0.99 else ''
+            col_sign_acc  = f"{BColor.red}**{BColor.reset}" if p_diff_acc < 0.01 else f"{BColor.red}*{BColor.reset}" if p_diff_acc < 0.05 else f"{BColor.grey}!{BColor.reset}" if p_diff_acc > 0.95 else f"{BColor.grey}!!{BColor.reset}" if p_diff_acc > 0.99 else ''
+            col_sign_prec = f"{BColor.red}**{BColor.reset}" if p_diff_prec < 0.01 else f"{BColor.red}*{BColor.reset}" if p_diff_prec < 0.05 else f"{BColor.grey}!{BColor.reset}" if p_diff_prec > 0.95 else f"{BColor.grey}!!{BColor.reset}" if p_diff_prec > 0.99 else ''
+            col_sign_rec  = f"{BColor.red}**{BColor.reset}" if p_diff_rec < 0.01 else f"{BColor.red}*{BColor.reset}" if p_diff_rec < 0.05 else f"{BColor.grey}!{BColor.reset}" if p_diff_rec > 0.95 else f"{BColor.grey}!!{BColor.reset}" if p_diff_rec > 0.99 else ''
+            sign_f1   = "**" if p_diff_f1 < 0.01 else "*" if p_diff_f1 < 0.05 else "!" if p_diff_f1 > 0.95 else "!!" if p_diff_f1 > 0.99 else ''
+            sign_acc  = "**" if p_diff_acc < 0.01 else "*" if p_diff_acc < 0.05 else "!" if p_diff_acc > 0.95 else "!!" if p_diff_acc > 0.99 else ''
+            sign_prec = "**" if p_diff_prec < 0.01 else "*" if p_diff_prec < 0.05 else "!" if p_diff_prec > 0.95 else "!!" if p_diff_prec > 0.99 else ''
+            sign_rec  = "**" if p_diff_rec < 0.01 else "*" if p_diff_rec < 0.05 else "!" if p_diff_rec > 0.95 else "!!" if p_diff_rec > 0.99 else ''
+            str_out = f"\n{'count sample diff f1   is twice tot diff f1':.<50} {twice_diff_f1:<5}/ {n_loops:<8}p < {round(p_diff_f1, 4):<6} {col_sign_f1}\n" \
+                      f"{'count sample diff prec is twice tot diff prec':.<50} {twice_diff_prec:<5}/ {n_loops:<8}p < {round(p_diff_acc, 4):<6} {col_sign_prec}\n" \
+                      f"{'count sample diff rec  is twice tot diff rec ':.<50} {twice_diff_rec:<5}/ {n_loops:<8}p < {round(p_diff_prec, 4):<6} {col_sign_rec }\n" \
+                      f"{'count sample diff acc  is twice tot diff acc':.<50} {twice_diff_acc:<5}/ {n_loops:<8}p < {round(p_diff_rec, 4):<6} {col_sign_acc }"
             df_tot.s_f1   = ['', sign_f1]
             df_tot.s_acc  = ['', sign_acc]
             df_tot.s_prec = ['', sign_prec]
             df_tot.s_rec  = ['', sign_rec]
             if targetclass is not None:
-                col_sign_tgt_f1   = f"{BColor.red}**{BColor.reset}" if twice_diff_tgt_f1   / n_loops < 0.01 else f"{BColor.red}*{BColor.reset}" if twice_diff_tgt_f1   / n_loops < 0.05 else f"{BColor.grey}!{BColor.reset}" if twice_diff_tgt_f1   / n_loops > 0.95 else f"{BColor.grey}!!{BColor.reset}" if twice_diff_tgt_f1   / n_loops > 0.99 else ''
-                col_sign_tgt_prec = f"{BColor.red}**{BColor.reset}" if twice_diff_tgt_prec / n_loops < 0.01 else f"{BColor.red}*{BColor.reset}" if twice_diff_tgt_prec / n_loops < 0.05 else f"{BColor.grey}!{BColor.reset}" if twice_diff_tgt_prec / n_loops > 0.95 else f"{BColor.grey}!!{BColor.reset}" if twice_diff_tgt_prec / n_loops > 0.99 else ''
-                col_sign_tgt_rec  = f"{BColor.red}**{BColor.reset}" if twice_diff_tgt_rec  / n_loops < 0.01 else f"{BColor.red}*{BColor.reset}" if twice_diff_tgt_rec  / n_loops < 0.05 else f"{BColor.grey}!{BColor.reset}" if twice_diff_tgt_rec  / n_loops > 0.95 else f"{BColor.grey}!!{BColor.reset}" if twice_diff_tgt_rec  / n_loops > 0.99 else ''
-                sign_tgt_f1   = "**" if twice_diff_tgt_f1   / n_loops < 0.01 else "*" if twice_diff_tgt_f1   / n_loops < 0.05 else "!" if twice_diff_tgt_f1   / n_loops > 0.95 else "!!" if twice_diff_tgt_f1   / n_loops > 0.99 else ''
-                sign_tgt_prec = "**" if twice_diff_tgt_prec / n_loops < 0.01 else "*" if twice_diff_tgt_prec / n_loops < 0.05 else "!" if twice_diff_tgt_prec / n_loops > 0.95 else "!!" if twice_diff_tgt_prec / n_loops > 0.99 else ''
-                sign_tgt_rec  = "**" if twice_diff_tgt_rec  / n_loops < 0.01 else "*" if twice_diff_tgt_rec  / n_loops < 0.05 else "!" if twice_diff_tgt_rec  / n_loops > 0.95 else "!!" if twice_diff_tgt_rec  / n_loops > 0.99 else ''
+                p_diff_tgt_f1 = twice_diff_tgt_f1 / n_loops
+                p_diff_tgt_prec = twice_diff_tgt_prec / n_loops
+                p_diff_tgt_rec = twice_diff_tgt_rec / n_loops
+                col_sign_tgt_f1   = f"{BColor.red}**{BColor.reset}" if p_diff_tgt_f1 < 0.01 else f"{BColor.red}*{BColor.reset}" if p_diff_tgt_f1 < 0.05 else f"{BColor.grey}!{BColor.reset}" if p_diff_tgt_f1 > 0.95 else f"{BColor.grey}!!{BColor.reset}" if p_diff_tgt_f1 > 0.99 else ''
+                col_sign_tgt_prec = f"{BColor.red}**{BColor.reset}" if p_diff_tgt_prec < 0.01 else f"{BColor.red}*{BColor.reset}" if p_diff_tgt_prec < 0.05 else f"{BColor.grey}!{BColor.reset}" if p_diff_tgt_prec > 0.95 else f"{BColor.grey}!!{BColor.reset}" if p_diff_tgt_prec > 0.99 else ''
+                col_sign_tgt_rec  = f"{BColor.red}**{BColor.reset}" if p_diff_tgt_rec < 0.01 else f"{BColor.red}*{BColor.reset}" if p_diff_tgt_rec < 0.05 else f"{BColor.grey}!{BColor.reset}" if p_diff_tgt_rec > 0.95 else f"{BColor.grey}!!{BColor.reset}" if p_diff_tgt_rec > 0.99 else ''
+                sign_tgt_f1   = "**" if p_diff_tgt_f1 < 0.01 else "*" if p_diff_tgt_f1 < 0.05 else "!" if p_diff_tgt_f1 > 0.95 else "!!" if p_diff_tgt_f1 > 0.99 else ''
+                sign_tgt_prec = "**" if p_diff_tgt_prec < 0.01 else "*" if p_diff_tgt_prec < 0.05 else "!" if p_diff_tgt_prec > 0.95 else "!!" if p_diff_tgt_prec > 0.99 else ''
+                sign_tgt_rec  = "**" if p_diff_tgt_rec < 0.01 else "*" if p_diff_tgt_rec < 0.05 else "!" if p_diff_tgt_rec > 0.95 else "!!" if p_diff_tgt_rec > 0.99 else ''
                 str_out += f"\ntarget {targetclass} {'count sample diff f1   is twice tot diff f1':.<50} {twice_diff_tgt_f1:<5}/ {n_loops:<8}p < {round((twice_diff_tgt_f1 / n_loops), 4):<6} {col_sign_tgt_f1}\n" \
-                             f"target {targetclass} {'count sample diff prec is twice tot diff prec':.<50} {twice_diff_tgt_prec:<5}/ {n_loops:<8}p < {round((twice_diff_tgt_prec / n_loops), 4):<6} {col_sign_tgt_prec}\n" \
-                             f"target {targetclass} {'count sample diff rec  is twice tot diff rec ':.<50} {twice_diff_tgt_rec:<5}/ {n_loops:<8}p < {round((twice_diff_tgt_rec / n_loops), 4):<6} {col_sign_tgt_rec }"
+                             f"target {targetclass} {'count sample diff prec is twice tot diff prec':.<50} {twice_diff_tgt_prec:<5}/ {n_loops:<8}p < {round((p_diff_tgt_prec), 4):<6} {col_sign_tgt_prec}\n" \
+                             f"target {targetclass} {'count sample diff rec  is twice tot diff rec ':.<50} {twice_diff_tgt_rec:<5}/ {n_loops:<8}p < {round((p_diff_tgt_rec), 4):<6} {col_sign_tgt_rec }"
                 df_tgt.s_tf1   = ['', sign_tgt_f1]
                 df_tgt.s_tprec = ['', sign_tgt_prec]
                 df_tgt.s_trec  = ['', sign_tgt_rec]
+                df_tgt['p_f1'] = [float('nan'), p_diff_tgt_f1]
+                df_tgt['p_prec'] = [float('nan'), p_diff_tgt_prec]
+                df_tgt['p_rec'] = [float('nan'), p_diff_tgt_rec]
             print(str_out)
             if self.savetsv:
                 df_tot.to_csv(f"{self.dirout}results.tsv", sep="\t")
