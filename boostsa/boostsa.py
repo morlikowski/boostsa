@@ -545,22 +545,30 @@ class Bootstrap:
                 if df_sample_tot.d_ce[-1]   > -2 * diff_ce:  twice_diff_ce   += 1 # lower is better
                 if df_sample_tot.d_sim[-1]  > 2 * diff_sim: twice_diff_sim += 1
                 if df_sample_tot.d_cor[-1]  > 2 * diff_cor: twice_diff_cor += 1
-            col_sign_jsd = f"{BColor.red}**{BColor.reset}" if twice_diff_jsd / n_loops < 0.01 else f"{BColor.red}*{BColor.reset}" if twice_diff_jsd / n_loops < 0.05 else f"{BColor.grey}!{BColor.reset}" if twice_diff_jsd / n_loops > 0.95 else f"{BColor.grey}!!{BColor.reset}" if twice_diff_jsd / n_loops > 0.99 else ''
-            col_sign_ce  = f"{BColor.red}**{BColor.reset}" if twice_diff_ce  / n_loops < 0.01 else f"{BColor.red}*{BColor.reset}" if twice_diff_ce  / n_loops < 0.05 else f"{BColor.grey}!{BColor.reset}" if twice_diff_ce  / n_loops > 0.95 else f"{BColor.grey}!!{BColor.reset}" if twice_diff_ce  / n_loops > 0.99 else ''
-            col_sign_sim = f"{BColor.red}**{BColor.reset}" if twice_diff_sim / n_loops < 0.01 else f"{BColor.red}*{BColor.reset}" if twice_diff_sim / n_loops < 0.05 else f"{BColor.grey}!{BColor.reset}" if twice_diff_sim / n_loops > 0.95 else f"{BColor.grey}!!{BColor.reset}" if twice_diff_sim / n_loops > 0.99 else ''
-            col_sign_cor = f"{BColor.red}**{BColor.reset}" if twice_diff_cor / n_loops < 0.01 else f"{BColor.red}*{BColor.reset}" if twice_diff_cor / n_loops < 0.05 else f"{BColor.grey}!{BColor.reset}" if twice_diff_cor / n_loops > 0.95 else f"{BColor.grey}!!{BColor.reset}" if twice_diff_cor / n_loops > 0.99 else ''
+            p_diff_jsd = twice_diff_jsd / n_loops
+            p_diff_ce = twice_diff_ce / n_loops
+            p_diff_sim = twice_diff_sim / n_loops
+            p_diff_cor = twice_diff_cor / n_loops
+            col_sign_jsd = f"{BColor.red}**{BColor.reset}" if p_diff_jsd < 0.01 else f"{BColor.red}*{BColor.reset}" if p_diff_jsd < 0.05 else f"{BColor.grey}!{BColor.reset}" if p_diff_jsd > 0.95 else f"{BColor.grey}!!{BColor.reset}" if p_diff_jsd > 0.99 else ''
+            col_sign_ce  = f"{BColor.red}**{BColor.reset}" if p_diff_ce < 0.01 else f"{BColor.red}*{BColor.reset}" if p_diff_ce < 0.05 else f"{BColor.grey}!{BColor.reset}" if p_diff_ce > 0.95 else f"{BColor.grey}!!{BColor.reset}" if p_diff_ce > 0.99 else ''
+            col_sign_sim = f"{BColor.red}**{BColor.reset}" if p_diff_sim < 0.01 else f"{BColor.red}*{BColor.reset}" if p_diff_sim < 0.05 else f"{BColor.grey}!{BColor.reset}" if p_diff_sim > 0.95 else f"{BColor.grey}!!{BColor.reset}" if p_diff_sim > 0.99 else ''
+            col_sign_cor = f"{BColor.red}**{BColor.reset}" if p_diff_cor < 0.01 else f"{BColor.red}*{BColor.reset}" if p_diff_cor < 0.05 else f"{BColor.grey}!{BColor.reset}" if p_diff_cor > 0.95 else f"{BColor.grey}!!{BColor.reset}" if p_diff_cor > 0.99 else ''
             sign_jsd = "**" if twice_diff_jsd / n_loops < 0.01 else "*" if twice_diff_jsd / n_loops < 0.05 else "!" if twice_diff_jsd / n_loops > 0.95 else "!!" if twice_diff_jsd / n_loops > 0.99 else ''
-            sign_ce  = "**" if twice_diff_ce  / n_loops < 0.01 else "*" if twice_diff_ce  / n_loops < 0.05 else "!" if twice_diff_ce  / n_loops > 0.95 else "!!" if twice_diff_ce  / n_loops > 0.99 else ''
-            sign_sim = "**" if twice_diff_sim / n_loops < 0.01 else "*" if twice_diff_sim / n_loops < 0.05 else "!" if twice_diff_sim / n_loops > 0.95 else "!!" if twice_diff_sim / n_loops > 0.99 else ''
-            sign_cor = "**" if twice_diff_cor / n_loops < 0.01 else "*" if twice_diff_cor / n_loops < 0.05 else "!" if twice_diff_cor / n_loops > 0.95 else "!!" if twice_diff_cor / n_loops > 0.99 else ''
-            str_out = f"{'count sample diff jsd is twice tot diff jsd':.<50} {twice_diff_jsd:<5}/ {n_loops:<8}p < {round((twice_diff_jsd / n_loops), 4):<6} {col_sign_jsd}\n" \
-                      f"{'count sample diff ce  is twice tot diff ce':.<50} {twice_diff_ce:<5}/ {n_loops:<8}p < {round((twice_diff_ce / n_loops), 4):<6} {col_sign_ce }\n" \
-                      f"{'count sample diff sim is twice tot diff sim':.<50} {twice_diff_sim:<5}/ {n_loops:<8}p < {round((twice_diff_sim / n_loops), 4):<6} {col_sign_sim}\n" \
-                      f"{'count sample diff cor is twice tot diff cor':.<50} {twice_diff_cor:<5}/ {n_loops:<8}p < {round((twice_diff_cor / n_loops), 4):<6} {col_sign_cor }"
+            sign_ce  = "**" if p_diff_ce < 0.01 else "*" if p_diff_ce < 0.05 else "!" if p_diff_ce > 0.95 else "!!" if p_diff_ce > 0.99 else ''
+            sign_sim = "**" if p_diff_sim < 0.01 else "*" if p_diff_sim < 0.05 else "!" if p_diff_sim > 0.95 else "!!" if p_diff_sim > 0.99 else ''
+            sign_cor = "**" if p_diff_cor < 0.01 else "*" if p_diff_cor < 0.05 else "!" if p_diff_cor > 0.95 else "!!" if p_diff_cor > 0.99 else ''
+            str_out = f"{'count sample diff jsd is twice tot diff jsd':.<50} {twice_diff_jsd:<5}/ {n_loops:<8}p < {round(p_diff_jsd, 4):<6} {col_sign_jsd}\n" \
+                      f"{'count sample diff ce  is twice tot diff ce':.<50} {twice_diff_ce:<5}/ {n_loops:<8}p < {round(p_diff_ce, 4):<6} {col_sign_ce }\n" \
+                      f"{'count sample diff sim is twice tot diff sim':.<50} {twice_diff_sim:<5}/ {n_loops:<8}p < {round(p_diff_sim, 4):<6} {col_sign_sim}\n" \
+                      f"{'count sample diff cor is twice tot diff cor':.<50} {twice_diff_cor:<5}/ {n_loops:<8}p < {round(p_diff_cor, 4):<6} {col_sign_cor }"
             df_tot.s_jsd = ['', sign_jsd]
             df_tot.s_ce  = ['', sign_ce]
             df_tot.s_sim = ['', sign_sim]
             df_tot.s_cor = ['', sign_cor]
+            df_tot['p_jsd'] = [float('nan'), p_diff_jsd]
+            df_tot['p_ce'] = [float('nan'), p_diff_ce]
+            df_tot['p_sim'] = [float('nan'), p_diff_sim]
+            df_tot['p_cor'] = [float('nan'), p_diff_cor]
             print(str_out)
             if self.savetsv:
                 df_tot.to_csv(f"{self.dirout}results.tsv", sep="\t")
