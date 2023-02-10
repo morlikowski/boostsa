@@ -494,9 +494,9 @@ class Bootstrap:
             sign_prec = "**" if p_diff_prec < 0.01 else "*" if p_diff_prec < 0.05 else "!" if p_diff_prec > 0.95 else "!!" if p_diff_prec > 0.99 else ''
             sign_rec  = "**" if p_diff_rec < 0.01 else "*" if p_diff_rec < 0.05 else "!" if p_diff_rec > 0.95 else "!!" if p_diff_rec > 0.99 else ''
             str_out = f"\n{'count sample diff f1   is twice tot diff f1':.<50} {twice_diff_f1:<5}/ {n_loops:<8}p < {round(p_diff_f1, 4):<6} {col_sign_f1}\n" \
-                      f"{'count sample diff prec is twice tot diff prec':.<50} {twice_diff_prec:<5}/ {n_loops:<8}p < {round(p_diff_acc, 4):<6} {col_sign_prec}\n" \
-                      f"{'count sample diff rec  is twice tot diff rec ':.<50} {twice_diff_rec:<5}/ {n_loops:<8}p < {round(p_diff_prec, 4):<6} {col_sign_rec }\n" \
-                      f"{'count sample diff acc  is twice tot diff acc':.<50} {twice_diff_acc:<5}/ {n_loops:<8}p < {round(p_diff_rec, 4):<6} {col_sign_acc }"
+                      f"{'count sample diff prec is twice tot diff prec':.<50} {twice_diff_prec:<5}/ {n_loops:<8}p < {round(p_diff_prec, 4):<6} {col_sign_prec}\n" \
+                      f"{'count sample diff rec  is twice tot diff rec ':.<50} {twice_diff_rec:<5}/ {n_loops:<8}p < {round(p_diff_rec, 4):<6} {col_sign_rec }\n" \
+                      f"{'count sample diff acc  is twice tot diff acc':.<50} {twice_diff_acc:<5}/ {n_loops:<8}p < {round(p_diff_acc, 4):<6} {col_sign_acc }"
             df_tot.s_f1   = ['', sign_f1]
             df_tot.s_acc  = ['', sign_acc]
             df_tot.s_prec = ['', sign_prec]
